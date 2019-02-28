@@ -40,11 +40,8 @@ var User = mongoose.Schema({
     }
 })
 
-// TODO: Run this async
-User.methods.validPassword = function(other) {
-  bcrypt.compareSync(other, this.password, (res) => {
-    return res;
-  });
+User.methods.validPassword = async function(other) {
+  return await bcrypt.compare(other, this.password);
 }
 
 module.exports = mongoose.model('User', User);
