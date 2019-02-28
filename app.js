@@ -3,6 +3,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/reforest')
+
 require('./passport');
 var passport = require('passport');
 

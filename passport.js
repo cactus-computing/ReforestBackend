@@ -1,23 +1,8 @@
-var JwtStrategy = require('passport-jwt').Strategy,
-    ExtractJwt = require('passport-jwt').ExtractJwt;
+var passport = require('passport');
+var JwtStrategy = require('passport-jwt').Strategy;
+var User = require('./schema/User')
 
 var opts = {}
-opts.jwtFromRequest = ExtractJwt.fromExtractors([cookieExtractor]);
-opts.secretOrKey = 'dirtysocks';
-
-passport.use(new JwtStrategy(opts, function(payload, done) {
-    User.findById(payload.id, function(err, user) {
-        if (err) {
-            return done(err, false);
-        }
-        if (user) {
-            return done(null, user);
-        } else {
-            return done(null, false);
-            // or you could create a new account
-        }
-    });
-}));
 
 var cookieExtractor = function(req) {
     var token = null;
@@ -27,3 +12,21 @@ var cookieExtractor = function(req) {
     }
     return token;
 };
+
+opts.jwtFromRequest = cookieExtractor;
+opts.secretOrKey = 'dirtysocks';
+
+passport.use(new JwtStrategy(opts, function(payload, done) {
+    User.findById(payload.id, function(err, user) {
+        if (err) {
+            return done(err, false);
+        }
+        
+        if (user) {
+            return done(null, user);
+        } else {
+            return done(null, false);
+        }
+    });
+}));
+

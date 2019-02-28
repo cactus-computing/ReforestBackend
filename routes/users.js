@@ -56,7 +56,7 @@ router.post('/login', (req, res) => {
       res.status(400).json({message: "Invalid email or password"});
       return;
     }
-
+    
     jwt.sign({id: user._id}, JWT_SECRET, {expiresIn: 60 * 15}, (err, token) => {
       if (err) {
         console.log(err);

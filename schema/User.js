@@ -30,27 +30,21 @@ var User = mongoose.Schema({
             type: {
               type: String, // Don't do `{ location: { type: String } }`
               enum: ['Point'], // 'location.type' must be 'Point'
-              required: true
+              required: false
             },
             coordinates: {
               type: [Number],
-              required: true
+              required: false
             },
-            required: false
         }
     }
 })
 
-User.methods.validPassword = function(password) {
-  bcrypt.compare(password, this.password, (err, match) => {
-    if (err) {
-      console.log(err);
-      return false;
-    }
-    return match;
-  })
+// TODO: Run this async
+User.methods.validPassword = function(other) {
+  bcrypt.compareSync(other, this.password, (res) => {
+    return res;
+  });
 }
-
-//User.index({ "home.location": "2dsphere" });
 
 module.exports = mongoose.model('User', User);
