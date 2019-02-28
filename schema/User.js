@@ -23,6 +23,8 @@ var User = mongoose.Schema({
       type: String,
       required: true
     },
+    // Email token sent out, if it exists then the account hasn't been confirmed
+    token: String,
     // Home Information
     home: {
         address: String,
@@ -39,6 +41,10 @@ var User = mongoose.Schema({
         }
     }
 })
+
+User.methods.active = function() {
+  return this.token == undefined;
+}
 
 User.methods.validPassword = async function(other) {
   return await bcrypt.compare(other, this.password);

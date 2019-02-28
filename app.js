@@ -20,5 +20,6 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 app.use('/users', usersRouter);
+app.use('/auth', require('./verification'))
 
 module.exports = app;
